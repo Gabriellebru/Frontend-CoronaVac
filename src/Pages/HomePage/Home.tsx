@@ -20,7 +20,7 @@ export default function Home() {
                     <View>
                         <View style={styles.container}>
                             <View style={styles.form}>
-                                <Text style={styles.title}>Olá otários!</Text>
+                                <Text style={styles.title}>Se ainda não tomou a vacina, solicite a sua já</Text>
 
 
                             </View>
