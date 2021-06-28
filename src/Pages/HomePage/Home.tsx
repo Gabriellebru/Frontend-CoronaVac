@@ -104,7 +104,6 @@ export default function Home() {
 
 
     return (
-
         <SafeAreaView style={{ flex: 1 }}>
             <TouchableOpacity
                 onPress={options}
