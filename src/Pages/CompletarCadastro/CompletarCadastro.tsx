@@ -1,6 +1,6 @@
 //react imports
 import React from 'react';
-import { StyleSheet, Text, TextInput, TouchableOpacity, View, SafeAreaView, KeyboardAvoidingView, Platform, ImageBackground, Alert } from 'react-native';
+import { StyleSheet, ScrollView, Text, TextInput, TouchableOpacity, View, SafeAreaView, KeyboardAvoidingView, Platform, ImageBackground, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/core';
 
 //my imports
@@ -59,19 +59,19 @@ export default function CompletarCadastro() {
         loadStoredInformation().then(() => {
             setLoading(false)
         });
-        // Alert.alert('Aviso!', 'Você precisa completar seu cadastro, para solicitar as doses das vacina.',
-        //     [
-        //         {
-        //             text: 'Voltar',
-        //             onPress: () => {
-        //                 navigation.navigate('Login')
-        //             }
-        //         },
-        //         {
-        //             text: 'Continuar'
-        //         }
-        //     ]
-        // )
+        Alert.alert('Aviso!', 'Você precisa completar seu cadastro, para solicitar as doses das vacina.',
+            [
+                {
+                    text: 'Voltar',
+                    onPress: () => {
+                        navigation.navigate('Login')
+                    }
+                },
+                {
+                    text: 'Continuar'
+                }
+            ]
+        )
 
     }, [])
 
@@ -135,26 +135,32 @@ export default function CompletarCadastro() {
         <ImageBackground source={BackgroundImageURl} style={styles.image} blurRadius={0.7}>
             <View style={styles.container}>
                 <View style={{ backgroundColor: 'rgba(100,100,100, 0.5)', borderRadius: 10, height: '90%', width: '80%', marginTop: '5%' }}>
-                    <View style={TituloStyles.container}>
-                        <View style={styles.form}>
+                    <KeyboardAvoidingView
+                        behavior={Platform.OS === "ios" ? "padding" : "height"}
+                        style={TituloStyles.form}>
+                        <ScrollView>
+
                             <Text style={TituloStyles.titulo}>Completar cadastro</Text>
                             <TextInput
                                 placeholder="Cpf"
                                 style={styles.textInput}
                                 onChangeText={(text) => { setCpf(text); }}
                                 value={txtCpf}
+                                maxLength={11}
                             ></TextInput>
                             <TextInput
                                 placeholder="Peso"
                                 style={styles.textInput}
                                 onChangeText={(text) => { setPeso(text); }}
                                 value={txtPeso}
+                                maxLength={4}
                             ></TextInput>
                             <TextInput
                                 placeholder="Altura"
                                 style={styles.textInput}
                                 onChangeText={(text) => { setAltura(text); }}
                                 value={txtAltura}
+                                maxLength={4}
                             ></TextInput>
                             <View>
                                 <View>
@@ -188,18 +194,21 @@ export default function CompletarCadastro() {
                                 style={styles.textInput}
                                 onChangeText={(text) => { setUF(text); }}
                                 value={txtUF}
+                                maxLength={2}
                             ></TextInput>
                             <TextInput
                                 placeholder="Tem comorbidade?"
                                 style={styles.textInput}
                                 onChangeText={(text) => { setComorbidade(text); }}
                                 value={txtComorbidade}
+                                maxLength={3}
                             ></TextInput>
                             <TextInput
                                 placeholder="Já teve Covid-19?"
                                 style={styles.textInput}
                                 onChangeText={(text) => { setTeveCovid(text); }}
                                 value={txtTeveCovid}
+                                maxLength={3}
                             ></TextInput>
                             <CustomButton
                                 title={'Atualizar cadastro'}
@@ -211,8 +220,9 @@ export default function CompletarCadastro() {
                             />
                             <View style={{ paddingTop: '25%' }}>
                             </View>
-                        </View>
-                    </View>
+                        </ScrollView>
+
+                    </KeyboardAvoidingView>
                 </View>
             </View>
         </ImageBackground>
@@ -223,11 +233,19 @@ const TituloStyles = StyleSheet.create({
     titulo: {
         fontSize: 28,
         color: colors.white,
-        marginTop: '22%',
+        marginTop: '10%',
         marginBottom: '2%'
     },
     container: {
         flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    simpleContainer: {
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    form: {
         alignItems: 'center',
         justifyContent: 'center',
     }

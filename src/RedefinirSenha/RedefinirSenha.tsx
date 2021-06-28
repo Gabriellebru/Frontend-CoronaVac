@@ -37,11 +37,12 @@ export default function RedefinirSenha() {
     }
 
     async function Redefinir() {
-        let errors: Array<string> = [];
+        const errors: Array<string> = [];
         let SenhaAlterada: RedefinirSenhaProps = {
             "email": txtEmail,
             "senha": txtSenha,
         }
+
 
         if (txtSenha != txtConfirmarSenha) {
             errors.push('\n\nSenhas não coincidem')
@@ -53,6 +54,9 @@ export default function RedefinirSenha() {
         setLoading(true)
         await api.put(`/paciente/RedefinirSenha`, SenhaAlterada)
             .then(() => {
+                if (errors.length != 0) {
+                    throw new Error()
+                }
                 setLoading(false);
                 Alert.alert('Aviso', 'Senha redefinida');
                 navigation.navigate('Login');
@@ -64,9 +68,12 @@ export default function RedefinirSenha() {
                     })
                     Alert.alert('Aviso: Verifique os erros a seguir', `${errors}`)
                 }
-                else if (e.response.data.Message != null) {
+                else if (e.response != undefined && e.response.data != undefined && e.response.data.Message != null) {
                     Alert.alert('Aviso', `${e.response.data.Message}`)
 
+                }
+                else {
+                    Alert.alert('Aviso', `${errors}`)
                 }
                 setLoading(false)
             })

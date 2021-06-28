@@ -56,8 +56,8 @@ export default function Home() {
     const [listVaccine, setLista] = React.useState<vaccineType[]>(vaccineTypeList);
 
     async function deleteUser() {
-        await api.delete(`/paciente/DeletarUsuario/${email}`).then(() => {
-            Alert.alert('Aviso', 'Conta apagada');
+        await api.delete(`/paciente/DeletarUsuario/${email}`).then((e) => {
+            Alert.alert('Aviso', `${e.data.Message}`);
             navigation.navigate('Login')
         }).catch((e) => {
             Alert.alert('Erro', `${e.response.data}`)
@@ -116,7 +116,7 @@ export default function Home() {
                     <FlatList
                         data={listVaccine}
                         renderItem={({ item }) => (
-                            <OptionButton title={item.title} active onPress={() => { Alert.alert('Aviso:', 'Não pode tomar') }} />
+                            <OptionButton title={item.title} active onPress={() => { Alert.alert('Aviso:', 'Solicitação realizada') }} />
                         )}
                         keyExtractor={(item, index) => index.toString()}
                         showsVerticalScrollIndicator={false}
@@ -125,15 +125,12 @@ export default function Home() {
                     />
                 </View>
                 <View style={{ flex: 1, alignItems: 'center' }}>
-                    <View style={styles.form}>
-                        <Text style={HomeStyle.texto}>Para realizar a solicitação da 1° ou 2° Dose da vacina, complete o cadastro.</Text>
-                        <Text>Clique no botão finalizar cadastro</Text>
-
+                    {/* <View style={styles.form}>
                         <CustomButton
                             title={'Sair'}
                             onPress={navigateToWelcome}
                         />
-                    </View>
+                    </View> */}
                 </View>
             </View>
         </SafeAreaView >
