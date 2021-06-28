@@ -1,15 +1,19 @@
 //react imports
 import React from 'react';
-import { StyleSheet, Text, TextInput, TouchableOpacity, View, SafeAreaView, KeyboardAvoidingView, Platform, ImageBackground } from 'react-native';
+import { StyleSheet, Text, TextInput, View, SafeAreaView, ImageBackground } from 'react-native';
 import { useNavigation } from '@react-navigation/core';
 import { Feather } from '@expo/vector-icons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 //my imports
-import Loading from '../../Components/Loading/Loading'
-import styles from '../../Styles/mainStyle'
-import { CircleButton } from '../../Components/Buttons/CircleButton/CircleButton'
+import Loading from '../../Components/Loading/Loading';
+import styles from '../../Styles/mainStyle';
+import { CircleButton } from '../../Components/Buttons/CircleButton/CircleButton';
+import CustomButton from '../../Components/Buttons/CustomButton/CustomButton';
 
 import api from '../../Services/api'
+import TextButton from '../../Components/Buttons/TextButton/TextButton';
+import { BackgroundImageURl } from '../../Services/constants'
 
 interface LoginProps {
   email: string,
@@ -24,7 +28,6 @@ interface PasswordConfig {
 export default function Login() {
 
   const navigation = useNavigation();
-  const image = { uri: "https://media.gazetadopovo.com.br/viver-bem/2019/02/vacina-filho-pais-antivacina-600x400-38413e10.jpg" }
 
   const [txtSenha, setSenha] = React.useState('');
   const [txtEmail, setEmail] = React.useState('');
@@ -40,7 +43,9 @@ export default function Login() {
   function navigateToWelcome() {
     navigation.goBack();
   }
-
+  function navigateToRedefinirSenha() {
+    navigation.navigate('RedefinirSenha');
+  }
   if (flLoading) {
     return (<Loading />)
   }
@@ -55,12 +60,23 @@ export default function Login() {
       alert('Campo senha é obrigatório');
       return;
     }
-    setLoading(true);
+    setLoading(true)
     try {
       const response = await api.post(`/paciente/Login`, objLogin);
-      if (response.data.auth) {
-        setLoading(false);
-        navigation.navigate('Home');
+      if (response.data.auth && response.data.needMoreInfo) {
+        await AsyncStorage.setItem('@AppCoronaVac:Email', response.data.pacienteRetorno.email)
+          .then(() => {
+            setLoading(false);
+            navigation.navigate('CompletarCadastro');
+          })
+
+      }
+      else {
+        await AsyncStorage.setItem('@AppCoronaVac:Username', response.data.pacienteRetorno.nome)
+          .then(() => {
+            setLoading(false);
+            navigation.navigate('Home');
+          })
       }
     }
     catch (e) {
@@ -71,55 +87,53 @@ export default function Login() {
     finally {
       setLoading(false);
     }
+
   }
 
   return (
-    <ImageBackground source={image} style={styles.image}>
+    <ImageBackground source={BackgroundImageURl} style={styles.image} blurRadius={0.7}>
       <SafeAreaView style={styles.container}>
-        <KeyboardAvoidingView style={styles.container}>
-          <View>
-            <View style={styles.container}>
-              <View style={styles.form}>
-                <Text style={styles.title}>Bem vindo!</Text>
-                <TextInput
-                  placeholder="Digite seu email"
-                  style={loginStyles.textInput}
-                  onChangeText={(text) => { setEmail(text); }}
-                  value={txtEmail}
-                ></TextInput>
-                <View style={loginStyles.passwordContainer}>
-                  <TextInput
-                    placeholder="Digite sua senha"
-                    style={loginStyles.textInputPassword}
-                    onChangeText={(text) => { setSenha(text); }}
-                    value={txtSenha}
-                    secureTextEntry={objPasswordConfig.flShowPass}
-                  ></TextInput>
-                  <Feather
-                    style={loginStyles.iconEye}
-                    name={objPasswordConfig.iconPass}
-                    size={28}
-                    color={'red'}
-                    onPress={handleChangeIcon}
-                  />
-                </View>
-                <TouchableOpacity
-                  style={styles.buttonClickMe}
-                  activeOpacity={0.7}
-                  onPress={navigateToHome}
-                >
-                  <Text style={styles.textButton}>Entrar</Text>
-                </TouchableOpacity>
-                <View style={{ paddingTop: '25%' }}>
-                  <CircleButton
-                    title={'<'}
-                    onPress={navigateToWelcome}
-                  />
-                </View>
-              </View>
+        <View style={{ backgroundColor: 'rgba(100,100,100, 0.5)', borderRadius: 10, height: '60%', width: '70%' }}>
+          <View style={styles.form}>
+            <Text style={styles.title}>Login</Text>
+            <TextInput
+              placeholder="Digite seu email"
+              style={loginStyles.textInput}
+              onChangeText={(text) => { setEmail(text); }}
+              value={txtEmail}
+            ></TextInput>
+            <View style={loginStyles.passwordContainer}>
+              <TextInput
+                placeholder="Digite sua senha"
+                style={loginStyles.textInputPassword}
+                onChangeText={(text) => { setSenha(text); }}
+                value={txtSenha}
+                secureTextEntry={objPasswordConfig.flShowPass}
+              ></TextInput>
+              <Feather
+                style={loginStyles.iconEye}
+                name={objPasswordConfig.iconPass}
+                size={28}
+                color={'red'}
+                onPress={handleChangeIcon}
+              />
+            </View>
+            <CustomButton
+              title={'Entrar'}
+              onPress={navigateToHome}
+            />
+            <TextButton
+              title={'Esqueceu a senha?'}
+              onPress={navigateToRedefinirSenha}
+            />
+            <View style={{ paddingTop: '10%' }}>
+              <CircleButton
+                title={'<'}
+                onPress={navigateToWelcome}
+              />
             </View>
           </View>
-        </KeyboardAvoidingView>
+        </View>
       </SafeAreaView>
     </ImageBackground>
   );
@@ -145,7 +159,8 @@ const loginStyles = StyleSheet.create({
     borderWidth: 1,
     width: 200,
     marginBottom: 16,
-    paddingHorizontal: 8
+    paddingHorizontal: 8,
+
   },
   textInputPassword: {
     height: 40,

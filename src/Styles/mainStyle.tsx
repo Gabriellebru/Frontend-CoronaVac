@@ -1,3 +1,4 @@
+import colors from '../Styles/colors';
 import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
@@ -6,7 +7,12 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
-
+    safearea: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        paddingTop: '10%'
+    },
     TextHello: {
         paddingBottom: 10,
         fontSize: 18,
@@ -18,14 +24,15 @@ const styles = StyleSheet.create({
     },
 
     textInput: {
-        height: 40,
+        height: 38,
+        backgroundColor: 'white',
         borderColor: 'black',
         borderRadius: 8,
         borderWidth: 1,
-        width: 200,
-        textAlign: 'center',
+        width: 230,
         marginBottom: 16,
-        backgroundColor: 'white'
+        paddingHorizontal: 8,
+
     },
 
     form: {
@@ -65,16 +72,25 @@ const styles = StyleSheet.create({
 
     title: {
         fontSize: 40,
-        paddingBottom: '30%'
+        paddingBottom: '10%',
+        color: 'white'
     },
 
     image: {
         flex: 1,
         resizeMode: "cover",
-        justifyContent: "center"
+        justifyContent: "center",
+    },
+    question: {
+        fontSize: 17,
+        color: colors.heading
+    },
+    vaccineListCss: {
+
+    },
+    itemVaccineCSS: {
+
     }
 });
-
-
 
 export default styles;

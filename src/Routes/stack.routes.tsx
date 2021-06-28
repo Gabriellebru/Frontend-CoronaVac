@@ -7,6 +7,8 @@ import Login from '../Pages/Login/Login';
 import Welcome from '../Pages/WelcomePage/Welcome';
 import Cadastro from '../Pages/Cadastro/Cadastro';
 import Home from '../Pages/HomePage/Home';
+import RedefinirSenha from '../RedefinirSenha/RedefinirSenha'
+import CompletarCadastro from '../Pages/CompletarCadastro/CompletarCadastro';
 
 const stackRoutes = createStackNavigator();
 
@@ -38,6 +40,14 @@ const AppRoutes: React.FC = () => (
         <stackRoutes.Screen
             name="IMC"
             component={IMC}
+        />
+        <stackRoutes.Screen
+            name="RedefinirSenha"
+            component={RedefinirSenha}
+        />
+        <stackRoutes.Screen
+            name="CompletarCadastro"
+            component={CompletarCadastro}
         />
     </stackRoutes.Navigator>
 )

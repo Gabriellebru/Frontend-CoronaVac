@@ -10,14 +10,15 @@ interface PasswordConfig {
 }
 
 interface PasswordTextInputProps extends TextInputProps {
-    placeholder: string
+    placeholder: string,
+    FeatherColor?: string
 }
 
 
-export default function PasswordTextInput({ placeholder, ...rest }: PasswordTextInputProps) {
+export default function PasswordTextInput({ placeholder, FeatherColor, ...rest }: PasswordTextInputProps) {
 
     const [objPasswordConfig, setConfigForm] = React.useState<PasswordConfig>
-        ({ flShowPass: false, iconPass: 'eye' });
+        ({ flShowPass: false, iconPass: 'eye-off' });
     const [txtLogin, setLogin] = React.useState('')
     const [txtSenha, setSenha] = React.useState('')
 
@@ -28,20 +29,20 @@ export default function PasswordTextInput({ placeholder, ...rest }: PasswordText
         setConfigForm({ iconPass: icone, flShowPass });
     }
     return (
-        <View style={FormStyles.FormContainer}>
+        <View style={styles.passwordContainer}>
             <TextInput
                 style={FormStyles.textInputPassword}
                 placeholder={placeholder}
                 onChangeText={text => setSenha(text)}
                 value={txtSenha}
-                secureTextEntry={objPasswordConfig.flShowPass}
+                secureTextEntry={!objPasswordConfig.flShowPass}
                 {...rest}
             />
             <Feather
                 style={styles.iconEye}
                 name={objPasswordConfig.iconPass}
                 size={25}
-                color={'red'}
+                color={FeatherColor == null ? 'red' : FeatherColor}
                 onPress={handleChangeIcon}
             />
         </View>
@@ -96,16 +97,17 @@ const styles = StyleSheet.create({
     },
     passwordContainer: {
         marginBottom: 16,
-        height: 40,
-        borderColor: '#dcdce6',
+        height: 38,
+        borderColor: 'black',
+        backgroundColor: 'white',
         borderRadius: 8,
         borderWidth: 1,
-        width: '70%',
+        width: 230,
         flexDirection: 'row',
-        justifyContent: 'space-between'
+        justifyContent: 'space-around'
     },
     iconEye: {
-        paddingHorizontal: 8,
-        marginTop: 6
+        marginTop: 6,
+        marginRight: 10
     }
 });

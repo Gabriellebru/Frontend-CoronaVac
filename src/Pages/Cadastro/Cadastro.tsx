@@ -6,11 +6,13 @@ import { useNavigation } from '@react-navigation/core';
 //my imports
 import styles from '../../Styles/mainStyle'
 import { CircleButton } from '../../Components/Buttons/CircleButton/CircleButton'
-import { BackgroundImageURl } from '../../../assets/constants'
 import Loading from '../../Components/Loading/Loading'
 
 import api from '../../Services/api'
 import { AxiosResponse } from 'axios';
+import CustomButton from '../../Components/Buttons/CustomButton/CustomButton';
+import PasswordTextInput from '../../Components/TextInputs/PasswordInput/PasswordInput';
+import { BackgroundImageURl } from '../../Services/constants';
 
 
 interface CadastroProps {
@@ -84,56 +86,53 @@ export default function Cadastro() {
     }
 
     return (
-        <ImageBackground source={image} style={styles.image}>
+        <ImageBackground source={BackgroundImageURl} style={styles.image} blurRadius={0.7}>
             <SafeAreaView style={styles.container}>
-                <KeyboardAvoidingView style={styles.container}>
-                    <View>
-                        <View style={styles.container}>
-                            <View style={styles.form}>
-                                <Text style={styles.title}>Bem vindo!</Text>
-                                <TextInput
-                                    placeholder="Nome completo"
-                                    style={styles.textInput}
-                                    onChangeText={(text) => { setNome(text); }}
-                                    value={txtNome}
-                                ></TextInput>
-                                <TextInput
-                                    placeholder="E-mail"
-                                    style={styles.textInput}
-                                    onChangeText={(text) => { setEmail(text); }}
-                                    value={txtEmail}
-                                ></TextInput>
-                                <TextInput
-                                    placeholder="Senha"
-                                    style={styles.textInput}
-                                    onChangeText={(text) => { setSenha(text); }}
-                                    value={txtSenha}
-                                    secureTextEntry={true}
-                                ></TextInput>
-                                <TextInput
-                                    placeholder="Confirmar Senha"
-                                    style={styles.textInput}
-                                    onChangeText={(text) => { setConfirmarSenha(text); }}
-                                    value={txtConfirmarSenha}
-                                    secureTextEntry={true}
-                                ></TextInput>
-                                <TouchableOpacity
-                                    style={styles.buttonClickMe}
-                                    activeOpacity={0.7}
-                                    onPress={navigateToLogin}
-                                >
-                                    <Text style={styles.textButton}>Cadastrar</Text>
-                                </TouchableOpacity>
-                                <View style={{ paddingTop: '25%' }}>
-                                    <CircleButton
-                                        title={'<'}
-                                        onPress={navigateToWelcome}
+                <View style={{ backgroundColor: 'rgba(100,100,100, 0.5)', borderRadius: 10, height: '70%', width: '70%' }}>
+                    <KeyboardAvoidingView style={styles.container}>
+                        <View>
+                            <View style={styles.container}>
+                                <View style={styles.form}>
+                                    <Text style={styles.title}>Cadastro</Text>
+                                    <TextInput
+                                        placeholder="Nome completo"
+                                        style={styles.textInput}
+                                        onChangeText={(text) => { setNome(text); }}
+                                        value={txtNome}
+                                    ></TextInput>
+                                    <TextInput
+                                        placeholder="E-mail"
+                                        style={styles.textInput}
+                                        onChangeText={(text) => { setEmail(text); }}
+                                        value={txtEmail}
+                                    ></TextInput>
+                                    <PasswordTextInput
+                                        placeholder="Senha"
+                                        onChangeText={(text) => { setSenha(text); }}
+                                        value={txtSenha}
+                                        secureTextEntry={true}
+                                    ></PasswordTextInput>
+                                    <PasswordTextInput
+                                        placeholder="Confirmar Senha"
+                                        onChangeText={(text) => { setConfirmarSenha(text); }}
+                                        value={txtConfirmarSenha}
+                                        secureTextEntry={true}
+                                    ></PasswordTextInput>
+                                    <CustomButton
+                                        title={'Cadastrar'}
+                                        onPress={navigateToLogin}
                                     />
+                                    <View style={{ paddingTop: '25%' }}>
+                                        <CircleButton
+                                            title={'<'}
+                                            onPress={navigateToWelcome}
+                                        />
+                                    </View>
                                 </View>
                             </View>
                         </View>
-                    </View>
-                </KeyboardAvoidingView>
+                    </KeyboardAvoidingView>
+                </View>
             </SafeAreaView>
         </ImageBackground>
     );
